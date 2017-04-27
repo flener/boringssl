@@ -31,7 +31,12 @@ if (NOT GO_EXECUTABLE)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  set(C_CXX_FLAGS "-Wall -Werror -Wformat=2 -Wsign-compare -Wmissing-field-initializers -Wwrite-strings -ggdb -fvisibility=hidden -fno-common")
+
+  if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_CURRENT_BINARY_DIR}")
+      set(WERROR_FLAG "-Werror")
+  endif()
+      
+  set(C_CXX_FLAGS "-Wall ${WERROR_FLAG} -Wformat=2 -Wsign-compare -Wmissing-field-initializers -Wwrite-strings -ggdb -fvisibility=hidden -fno-common")
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wnewline-eof")
   endif()
@@ -170,18 +175,18 @@ elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "armv7-a")
   set(ARCH "arm")
 elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
   set(ARCH "aarch64")
-else()
-  message(FATAL_ERROR "Unknown processor:" ${CMAKE_SYSTEM_PROCESSOR})
+  #else()
+  #message(FATAL_ERROR "Unknown processor:" ${CMAKE_SYSTEM_PROCESSOR})
 endif()
 
-if (ANDROID AND ${ARCH} STREQUAL "arm")
+if (ANDROID AND "${ARCH}" STREQUAL "arm")
   # The Android-NDK CMake files somehow fail to set the -march flag for
   # assembly files. Without this flag, the compiler believes that it's
   # building for ARMv5.
   set(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} -march=${CMAKE_SYSTEM_PROCESSOR}")
 endif()
 
-if (${ARCH} STREQUAL "x86" AND APPLE)
+if ("${ARCH}" STREQUAL "x86" AND APPLE)
   # With CMake 2.8.x, ${CMAKE_SYSTEM_PROCESSOR} evalutes to i386 on OS X,
   # but clang defaults to 64-bit builds on OS X unless otherwise told.
   # Set ARCH to x86_64 so clang and CMake agree. This is fixed in CMake 3.

@@ -179,6 +179,11 @@ elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
   #message(FATAL_ERROR "Unknown processor:" ${CMAKE_SYSTEM_PROCESSOR})
 endif()
 
+
+if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang|AppleClang")
+   list(APPEND CMAKE_EXE_LINKER_FLAGS "-lstdc++")
+endif()
+
 if (ANDROID AND "${ARCH}" STREQUAL "arm")
   # The Android-NDK CMake files somehow fail to set the -march flag for
   # assembly files. Without this flag, the compiler believes that it's

@@ -207,3 +207,10 @@ add_executable(
 
 target_link_libraries(refcount_test crypto)
 add_dependencies(all_tests refcount_test)
+
+
+install(TARGETS crypto
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    )

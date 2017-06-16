@@ -49,3 +49,9 @@ add_executable(
 
 target_link_libraries(ssl_test ssl crypto)
 add_dependencies(all_tests ssl_test)
+
+install(TARGETS ssl
+	RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    )

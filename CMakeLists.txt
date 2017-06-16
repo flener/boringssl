@@ -235,3 +235,6 @@ add_custom_target(
     DEPENDS all_tests bssl_shim
     ${MAYBE_USES_TERMINAL})
 ]]
+
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/openssl DESTINATION include)
